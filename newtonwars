@@ -14,50 +14,50 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #bind the socket to a public host,
 # and a well-known port
 s.connect((HOST, PORT))
-#become a server socket
-thread_gestartet = False
 
-def name(a):
-	while True:
-		global s
-		s.sendall('n memo  \n')
-		time.sleep( 1 )
-		s.sendall('n  memo \n')
-		time.sleep( 1 ) 		
-		s.sendall('n   memo\n')
-		time.sleep( 1 )
-		s.sendall('n    mem\n')
-		time.sleep( 1 ) 		
-		s.sendall('n     me\n')
-		time.sleep( 1 )
-		s.sendall('n      m\n')
-		time.sleep( 1 ) 		
-		s.sendall('n       \n')
-		time.sleep( 1 )
-		s.sendall('n o     \n')
-		time.sleep( 1 ) 		
-		s.sendall('n mo    \n')
-		time.sleep( 1 ) 		
-		s.sendall('n emo   \n')
-		time.sleep( 1 ) 		
+def name():
+	s.sendall('n memo  \n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n  memo \n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n   memo\n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n    mem\n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n     me\n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n      m\n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n       \n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n o     \n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n mo    \n')
+	send()
+	time.sleep( 1 )
+	s.sendall('n emo   \n')
+	send()
+	time.sleep( 1 )
 
-def send(a):
-	global thread_gestartet
-	thread_gestartet = True
-	while True:
-		global s
-		global velocity
-		global angle
-		s.sendall('v '+str(velocity)+'\n')
-		s.sendall(str(angle)+'\n')
+def send():
+	s.sendall('v '+str(velocity)+'\n')
+	s.sendall(str(angle)+'\n')
 
 def ninput(s):
 	while True:
 		ninput = raw_input("> ")
-		if ('v' in ninput):
+		if('v' in ninput):
 			global velocity
 			velocity = ninput.split().pop()
-		elif ( 'c' in ninput):
+		elif('c' in ninput):
 			s.sendall('c\n')
 		elif ninput:
 			try:
@@ -69,7 +69,7 @@ def ninput(s):
 
 
 if len(sys.argv) > 1 and ('b' in sys.argv[1]):
-	s.sendall('n memoBot\n') 
+	s.sendall('n memoBot\n')
 	print "sending..."
 	if sys.argv[2]:
 		angle = float(sys.argv[2])
@@ -77,13 +77,11 @@ if len(sys.argv) > 1 and ('b' in sys.argv[1]):
 		angle = angle + 1
 		s.sendall('v '+str(velocity)+'\n')
 		s.sendall(str(angle)+'\n')
-		time.sleep( 5 )
+		time.sleep(5)
 else:
 	s.sendall('n memo\n')
-	thread.start_new_thread(name, (1,))
-	thread.start_new_thread(send, (1,))
-	while not thread_gestartet:
-		pass
-	ninput(s)
+	thread.start_new_thread(ninput,(s,))
+	while True:
+		name()
+		send()
 s.close()
-
