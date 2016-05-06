@@ -90,14 +90,44 @@ def randomBot(s):
 		s.sendall(str(angle) + '\n')
 		time.sleep(5)
 
-if len(sys.argv) > 1 and ('b' in sys.argv[1]):
-	plusOneBot(sys.argv[2])
-elif len(sys.argv) > 1 and ('r' in sys.argv[1]):
-	randomBot()
-else:
+def client(s):
 	s.sendall('n memo\n')
 	thread.start_new_thread(ninput,(s,))
 	while True:
 		name()
 		send()
-s.close()
+		name()
+
+if len(sys.argv) == 5:
+	s = connect(sys.argv[1], int(sys.argv[2]))
+	if('b' in sys.argv[3]):
+		plusOneBot(s, sys.argv[4])
+elif len(sys.argv) == 4:
+	if 'b' in sys.argv[2]:
+		s = connect(sys.argv[1])
+		plusOneBot(s, sys.argv[3])
+	elif 'r' in sys.argv[3]:
+		s = connect(sys.argv[1], int(sys.argv[2]))
+		randomBot(s)
+elif len(sys.argv) == 3:
+	if 'r' in sys.argv[2]:
+		s = connect(sys.argv[1])
+		randomBot(s)
+	elif 'b' in sys.argv[1]:
+		s = connect()
+		plusOneBot(s, sys.argv[2])
+	else:
+		s = connect(sys.argv[1], int(sys.argv[2]))
+		client(s)
+elif len(sys.argv) == 2:
+	if 'r' in sys.argv[1]:
+		s = connect()
+		randomBot(s)
+	else:
+		s = connect(sys.argv[1])
+		client(s)
+elif len(sys.argv) == 1:
+	s = connect()
+	client(s)
+else:
+	print "wrong number of arguments"
