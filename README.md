@@ -2,8 +2,10 @@ Newtonwars Client
 =======
 
 ###### Usage
- - create a bot shooting at 90 degrees and incrementing by one every five seconds
-	* newtonwars b 90 &
+ - create a bot initially shooting at 90 degrees and incrementing by one every five seconds
+	* newtonwars b 90
+ - bot that shoots randomly
+	* newtonwars r
  - client
 	* newtonwars
 	* in the client simply enter a degree. This is used until you define a new one

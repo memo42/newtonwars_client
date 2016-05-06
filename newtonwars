@@ -4,6 +4,7 @@ import socket
 import time
 import thread
 import sys
+import random
 
 angle = 0
 velocity = 15
@@ -67,17 +68,31 @@ def ninput(s):
 				print "not a valid angle"
 			print angle
 
-
-if len(sys.argv) > 1 and ('b' in sys.argv[1]):
+def plusOneBot(startangle):
 	s.sendall('n memoBot\n')
 	print "sending..."
-	if sys.argv[2]:
-		angle = float(sys.argv[2])
+	if startangle:
+		angle = float(startangle)
 	while True:
 		angle = angle + 1
-		s.sendall('v '+str(velocity)+'\n')
-		s.sendall(str(angle)+'\n')
+		s.sendall('v ' + str(velocity) + '\n')
+		s.sendall(str(angle) + '\n')
 		time.sleep(5)
+
+def randomBot():
+	s.sendall('n memoBot\n')
+	print "sending..."
+	random.seed()
+	while True:
+		angle = random.random() * 360
+		s.sendall('v ' + str(velocity) + '\n')
+		s.sendall(str(angle) + '\n')
+		time.sleep(5)
+
+if len(sys.argv) > 1 and ('b' in sys.argv[1]):
+	plusOneBot(sys.argv[2])
+elif len(sys.argv) > 1 and ('r' in sys.argv[1]):
+	randomBot()
 else:
 	s.sendall('n memo\n')
 	thread.start_new_thread(ninput,(s,))
