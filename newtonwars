@@ -8,6 +8,7 @@ import random
 
 angle = 0
 velocity = 15
+clientRandom = False
 
 def connect(HOST = 'localhost', PORT = 3490):
 
@@ -61,6 +62,14 @@ def ninput(s):
 			velocity = ninput.split().pop()
 		elif('c' in ninput):
 			s.sendall('c\n')
+		elif('r' in ninput):
+			global clientRandom
+			clientRandom = True
+			print "Random Mode - randomly shooting +-10 around the set angle"
+		elif('q' in ninput):
+			global clientRandom
+			clientRandom = False
+			print "Random Mode disabled"
 		elif ninput:
 			try:
 				global angle
@@ -94,7 +103,11 @@ def client(s):
 	s.sendall('n memo\n')
 	thread.start_new_thread(ninput,(s,))
 	while True:
-		name()
+		global clientRandom
+		global angle
+		if clientRandom == True:
+			angle = random.random() * 20 - 10 + angle
+			print "Angle: " + str(angle) + " - Random mode - press q to exit"
 		send()
 		name()
 
