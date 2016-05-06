@@ -9,12 +9,13 @@ import random
 angle = 0
 velocity = 15
 
-HOST = 'localhost'
-PORT = 3490
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#bind the socket to a public host,
-# and a well-known port
-s.connect((HOST, PORT))
+def connect(HOST = 'localhost', PORT = 3490):
+
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	#bind the socket to a public host,
+	# and a well-known port
+	s.connect((HOST, PORT))
+	return s
 
 def name():
 	s.sendall('n memo  \n')
@@ -49,8 +50,8 @@ def name():
 	time.sleep( 1 )
 
 def send():
-	s.sendall('v '+str(velocity)+'\n')
-	s.sendall(str(angle)+'\n')
+	s.sendall('v ' + str(velocity)+'\n')
+	s.sendall(str(angle) + '\n')
 
 def ninput(s):
 	while True:
@@ -68,7 +69,7 @@ def ninput(s):
 				print "not a valid angle"
 			print angle
 
-def plusOneBot(startangle):
+def plusOneBot(s, startangle):
 	s.sendall('n memoBot\n')
 	print "sending..."
 	if startangle:
@@ -79,7 +80,7 @@ def plusOneBot(startangle):
 		s.sendall(str(angle) + '\n')
 		time.sleep(5)
 
-def randomBot():
+def randomBot(s):
 	s.sendall('n memoBot\n')
 	print "sending..."
 	random.seed()
