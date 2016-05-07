@@ -5,6 +5,10 @@ import time
 import thread
 import sys
 import random
+try:
+	import readline
+except:
+	pass #readline not available
 
 angle = 0
 velocity = 15
