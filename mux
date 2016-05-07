@@ -1,0 +1,42 @@
+#! /bin/sh
+
+. functions
+
+while getopts 't:p:' OPTION ; do
+	case "$OPTION" in
+	t) 	start=$((1))
+			amount=$OPTARG;;
+	p) 	stop=$((1))
+			amount=$OPTARG;;
+	esac
+done
+
+if [ $start ]; then
+	list="0 1 2 3 4 5 6 7 8 9 10 11"
+	counter=$((1))
+	once=$((0))
+
+	for i in $list; do
+		if [ "$amount" != "" ] && [ "$counter" -le "$amount" ]; then
+			screen -mdS newtonwars$i python newtonwars -r
+			#i=$(echo $!)
+			#echo "$i"
+			counter=$((counter + 1))
+			#echo $counter
+		elif [ "$amount" = "" ] && [ "$once" -eq 0 ]; then
+			echo "please specify the number of bots to be started"
+			once=$((1))
+		fi
+	done
+	screen -ls
+elif [ $stop ]; then
+	counter=$((1))
+	screen=$(screen -ls | grep -oE "[0-9]*.newtonwars[0-9]*" | grep -oE "^[0-9]*")
+	for i in $screen; do
+		if [ "$counter" -le "$amount" ]; then
+			kill ${i}
+			counter=$((counter + 1))
+		fi
+	done
+	screen -ls
+fi
